@@ -580,7 +580,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt( void )
 void __attribute__((__interrupt__, no_auto_psv)) _INT0Interrupt( void )
 {
     btn_pressed=1;
-    printUART1("Botón Presionado");
     IFS0bits.INT0IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL BOTON                      
 }
 
