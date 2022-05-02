@@ -134,14 +134,14 @@ int main(void)
     
     printUART1("\r\n inicializando... \r\n");
     
-    enviarComandoAT(CMD_AT);
+    /*enviarComandoAT(CMD_AT);
     enviarComandoAT(CMD_ATE0);
     
     recibirMensaje();
     
     //enviarMensaje();
     
-    /*printUART1("\r\n Numero Contacto 1: \r\n");
+    printUART1("\r\n Numero Contacto 1: \r\n");
     printUART1(contacto1);
     printUART1("\r\n Numero Contacto 2: \r\n");
     printUART1(contacto2);
@@ -160,6 +160,8 @@ int main(void)
         }else if(cont_T1 == 60){
             cont_T1=0;
             leerMem();
+            RETARDO_1s();
+            enviarComandoAT(CMD_AT_CMGD);
         }
     }
     
@@ -519,7 +521,7 @@ short int resp;
             cont = 3;
             fin = 0;
         }  
-    } else if(resp == 123) { //'{'
+    } else if(resp == 38) { //'&'
         cont = 4;
         fin = 0;
     }else if(cont == 1 && fin == 0){
@@ -548,7 +550,7 @@ short int resp;
             l++;
         }
     } else if(cont == 4 && fin == 0){
-        if(resp == 125){ // '}'
+        if(resp == 35){ // '#'
             fin = 1;
             cont=0;
             m=0;
@@ -588,5 +590,3 @@ void __attribute__((__interrupt__, no_auto_psv)) _INT0Interrupt( void )
     btn_pressed=1;
     IFS0bits.INT0IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL BOTON                      
 }
-
-
