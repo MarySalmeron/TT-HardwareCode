@@ -52,8 +52,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _INT0Interrupt( void );
 /*ENVÍO DE MENSAJES                                                             */
 char CMD_AT[] = "AT\r";
 char CMD_ATE0[] = "ATE1\r";
-char CMD_AT_CMGF[] = "AT+CMGF=1\r";                     //Poner en modo texto
-//char CMD_AT_CMGS[] = "AT+CMGS=\"5574871193\"\r";        
+char CMD_AT_CMGF[] = "AT+CMGF=1\r";                     //Poner en modo texto      
 char CMD_AT_CMGS[] = "AT+CMGS=\"";
 char CMD_MENSAJE[] = "Mensaje enviado desde IoT\x1A\r";
 
