@@ -72,7 +72,7 @@ char CMD_AT_QINDCFG[]="AT+QINDCFG=\"smsincoming\",1\r";
 char CMD_AT_CMGR[]="AT+CMGR";               //Leer mensaje con index específico
 char CMD_AT_CMGD[]="AT+CMGD=1,4\r";           //Borrar mensajes
 
-char inicioMSJ [] = "\"";
+
 char CMD_MSJFIN [] = "Me encuentro segura, en un momento me comunico contigo\x1A\r";
 char parteFinMSJ [] = "\x1A\r";
 char parteFinal [] = "\"\r";
@@ -94,6 +94,7 @@ int cont=0;
 int bandFin=0;
 int cont_T1;
 int btn_pressed;
+int tiempo_borrarMem=0;
 char count;
 /********************************************************************************/
 /* DECLARACIONES DE FUNCIONES													*/
@@ -160,8 +161,11 @@ int main(void)
         }else if(cont_T1 == 60){
             cont_T1=0;
             leerMem();
-            RETARDO_1s();
-            enviarComandoAT(CMD_AT_CMGD);
+		tiempo_borrarMem++;
+		if(tiempo_borrarMem == 5){
+			enviarComandoAT(CMD_AT_CMGD);
+			tiempo_borrarMem=0;
+		}
         }
     }
     
@@ -200,21 +204,18 @@ void enviarMensaje(){
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto1);
         enviarComandoAT(parteFinal);
-        enviarComandoAT(inicioMSJ);
         enviarComandoAT(mensaje);
         enviarComandoAT(parteFinMSJ);
         /*ENVÍO A CONTACTO 2*/
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto2);
         enviarComandoAT(parteFinal);
-        enviarComandoAT(inicioMSJ);
         enviarComandoAT(mensaje);
         enviarComandoAT(parteFinMSJ);
         /*ENVÍO A CONTACTO 3*/
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto3);
         enviarComandoAT(parteFinal);
-        enviarComandoAT(inicioMSJ);
         enviarComandoAT(mensaje);
         enviarComandoAT(parteFinMSJ);
     }
