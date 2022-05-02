@@ -71,9 +71,11 @@ char CMD_AT_CMGL[]="AT+CMGL=\"ALL\"\r";       //Lista todos los mensajes
 char CMD_AT_QINDCFG1[]= "AT+QIDNCFG=?\r";
 char CMD_AT_QINDCFG[]="AT+QINDCFG=\"smsincoming\",1\r";
 char CMD_AT_CMGR[]="AT+CMGR";               //Leer mensaje con index específico
-char CMD_AT_CMGD[]="AT+CMGD=1,4\r";           //Borrar mensajes,
+char CMD_AT_CMGD[]="AT+CMGD=1,4\r";           //Borrar mensajes
 
+char inicioMSJ [] = "\"";
 char CMD_MSJFIN [] = "Me encuentro segura, en un momento me comunico contigo\x1A\r";
+char parteFinMSJ [] = "\x1A\r";
 char parteFinal [] = "\"\r";
 
 /********************************************************************************/
@@ -197,17 +199,23 @@ void enviarMensaje(){
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto1);
         enviarComandoAT(parteFinal);
-        enviarComandoAT(CMD_MENSAJE);  
+        enviarComandoAT(inicioMSJ);
+        enviarComandoAT(mensaje);
+        enviarComandoAT(parteFinMSJ);
         /*ENVÍO A CONTACTO 2*/
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto2);
         enviarComandoAT(parteFinal);
-        enviarComandoAT(CMD_MENSAJE);
+        enviarComandoAT(inicioMSJ);
+        enviarComandoAT(mensaje);
+        enviarComandoAT(parteFinMSJ);
         /*ENVÍO A CONTACTO 3*/
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto3);
         enviarComandoAT(parteFinal);
-        enviarComandoAT(CMD_MENSAJE);
+        enviarComandoAT(inicioMSJ);
+        enviarComandoAT(mensaje);
+        enviarComandoAT(parteFinMSJ);
     }
     
 }
@@ -492,15 +500,13 @@ void iniIoT_BG96()
 /********************************************************************************/
 void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
 {
-    short int resp;
+short int resp;
     LATBbits.LATB0 = 1;     //LED
         
     resp = U2RXREG;
     U1TXREG = resp;
     
-    if(resp == 42){ //'*'
-        bandFin=1;
-    }
+  
     /*INICIO DEL ANÁLISIS DE LA CADENA DE MENSAJE*/
     /*Analisis de la cadena para recepción de números de contacto y del mensaje*/
     if(resp == 60 ){ //'<'
@@ -513,39 +519,39 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
         } else if(cont == 2){
             cont = 3;
             fin = 0;
-        }else if( cont == 3){
-            cont = 4;
-            fin = 0;
-        }    
-    } else if(cont == 1 && fin == 0){
+        }  
+    } else if(resp == 123) { //'{'
+        cont = 4;
+        fin = 0;
+    }else if(cont == 1 && fin == 0){
         if(resp == 62) {// '>'
             fin = 1;
+            j=0;
         }            
         else{
             contacto1[j]=resp;
             j++; 
         } 
     }  else if(cont == 2 && fin == 0){
-        if(resp == 62)          // '>'
+        if(resp == 62) {         // '>'
             fin = 1;
-        else{
+            k=0;
+        }else{
             contacto2[k]=resp;
             k++;
         }
     }  else if(cont == 3 && fin == 0){
-        if(resp == 62)          // '>'
+        if(resp == 62){          // '>'
             fin = 1;
-        else{
+            l=0;
+        }else{
             contacto3[l]=resp;
             l++;
         }
     } else if(cont == 4 && fin == 0){
-        if(resp == 62){ // '>'
+        if(resp == 125){ // '}'
             fin = 1;
             cont=0;
-            j=0;
-            k=0;
-            l=0;
             m=0;
         }              
         else{
@@ -557,6 +563,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
     
     LATBbits.LATB0 = 0;     //LED
     IFS1bits.U2RXIF = 0;
+ 
 }
 
 /********************************************************************************/
