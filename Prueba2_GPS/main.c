@@ -1,6 +1,6 @@
 /* 
  * File:   main.c
- * Author: María José
+ * Author: MarÃ­a JosÃ©
  *
  * Created on 2 de marzo de 2022, 06:03 PM
  */
@@ -39,31 +39,21 @@
 /********************************************************************************/
 /* DECLARACIONES GLOBALES														*/
 /********************************************************************************/
-/*DECLARACI?N DE LA ISR DEL TIMER 1 USANDO __attribute__						*/
+/*DECLARACI?N DE LA ISR DEL UART2 USANDO __attribute__						*/
 /********************************************************************************/
 void __attribute__((__interrupt__)) _U2RXInterrupt( void );
 
 
-//****Comandos AT****
+/****Comandos AT****/
 
-/****Comandos para envío de mensaje*****/
-char CMD_AT[] = "AT\r";
-char CMD_ATE0[] = "ATE1\r";
 
-/****Comandos para leer mensajes*****/
-/*CMGR=3 PARA LEER MENSAJE*/
-char CMD_AT_CMGR [] = "AT+CMGR=1\r";
 
 /****Comandos para GPS*****/
-/*char CMD_AT_QGPSCFG [] = "AT+QGPSCFG=\"nmeasrc\",1\r";
-char CMD_AT_QGPS[] = "AT+QGPS=1,0\r";*/
-
-//char CMD_AT_QGPSCFG [] = "AT+QGPSCFG=\"outport\",\"uartnmea\",115200\r";
 char CMD_AT_QGPS[] = "AT+QGPS?\r";
 char CMD_AT_QGPS1[] = "AT+QGPS=1\r";
-char CMD_AT_QGPSLOC [] = "AT+QGPSLOC?\r"; //Solicitar ubicación
+char CMD_AT_QGPSLOC [] = "AT+QGPSLOC?\r"; //Solicitar ubicaciÃ³n
 char CMD_AT_QGPSGNMEA [] = "AT+QGPSGNMEA=\"GGA\"\r";
-char CMD_AT_QGPSCFG0 [] = "AT+QGPSCFG=\"nmeasrc\",1\r";
+char CMD_AT_QGPSCFG0 [] = "AT+QGPSCFG=\"gnssconfig\"\r";
 
 char CMD_AT_QGPSEND [] = "AT+QGPSEND\r";
 
@@ -77,9 +67,8 @@ void configurarUART1();
 void configurarUART2();
 void configurarInterrupciones();
 void habilitarPerifericos();
-
-void turnOnGPS();
 void iniIoT_BG96();
+void turnOnGPS();
 void enviarComandoAT(char comando[]);
 
 void printUART1(char* cadena);
@@ -122,24 +111,9 @@ void turnOnGPS(){
     RETARDO_1s();
     enviarComandoAT(CMD_AT_QGPS1);
     //RETARDO_1s();
-    for(int j=0; j<10; j++){
-        RETARDO_1s();
-    }
-    //enviarComandoAT(CMD_AT_QGPSCFG0);
-    //enviarComandoAT(CMD_AT_QGPSGNMEA);
-    
-    enviarComandoAT(CMD_AT_QGPSLOC);
-    for(int k=0;k<5;k++){
-        RETARDO_1s();
-        RETARDO_1s();
-        RETARDO_1s();
-        RETARDO_1s();
-        RETARDO_1s();
-        
+  for(int i=0;i<20;i++){
         enviarComandoAT(CMD_AT_QGPSLOC);
     }
-    RETARDO_1s();
-    enviarComandoAT(CMD_AT_QGPS);
 }
 
 void habilitarPerifericos()
@@ -282,7 +256,7 @@ void enviarComandoAT(char comando[])
 /********************************************************************************/
 int i=0;
 int respValid=0;
-//short int resp [200];
+
 void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
 {
     LATBbits.LATB0 = 1;     //LED
@@ -291,33 +265,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
    resp = U2RXREG;
     U1TXREG = resp;
     
-    /*resp[i]= U2RXREG;
-    U1TXREG = resp[i++];*/
-   // printUART1("\r\n Recibiendo respuesta... \r\n");
-    /*if(resp [i] == 13){     //<CR>
-        printUART1="\r";
-    }
-    */
-    
-//    respuestaGSM[j] = resp;
-//    j++;
-/*    
-    if(resp == 13){     //<CR>
-        resp = '.';
-    }
-    else if(resp == 10){     //<LF>
-        resp = '_';
-        count--;
-    }
-    U1TXREG = resp;
-    
-    else if(resp == 62){    //'>'
-        count--;
-    }
-    else if(resp == 32){   //' '
-        resp = '-';
-    }
-    */
     LATBbits.LATB0 = 0;     //LED
     IFS1bits.U2RXIF = 0;
 }
