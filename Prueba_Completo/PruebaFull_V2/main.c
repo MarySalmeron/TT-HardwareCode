@@ -1,6 +1,6 @@
 /* 
  * File:   main.c
- * Author: MarÌa JosÈ
+ * Author: Mar√≠a Jos√©
  *
  * Created on 11 de abril de 2022, 07:43 PM
  */
@@ -49,27 +49,27 @@ void __attribute__((__interrupt__, no_auto_psv)) _INT0Interrupt( void );
 /********************************************************************************/
 /* COMANDOS AT                                                                  */
 /********************************************************************************/
-/*ENVÕO DE MENSAJES                                                             */
+/*ENV√çO DE MENSAJES                                                             */
 char CMD_AT[] = "AT\r";
 char CMD_ATE0[] = "ATE1\r";
 char CMD_AT_CMGF[] = "AT+CMGF=1\r";                     //Poner en modo texto
 //char CMD_AT_CMGS[] = "AT+CMGS=\"5574871193\"\r";        
 char CMD_AT_CMGS[] = "AT+CMGS=\"";
 
-/*RECEPCI”N DE MENSAJES                                                         */
+/*RECEPCI√ìN DE MENSAJES                                                         */
 
 char CMD_AT_GMM[]="AT+GMM\r";               //Describe el modulo
 char CMD_AT_COPS[]="AT+COPS?\r";            //Checa el network 
 char CMD_AT_CFUN[]="AT+CFUN?\r";            //Checa la funcionalidad
 char CMD_AT_CFUN1[]="AT+CFUN=1\r";          //Activa el SMS y el CALL
-char CMD_AT_CSQ[]="AT+CSQ\r";               //checa la fuerza de la seÒal
+char CMD_AT_CSQ[]="AT+CSQ\r";               //checa la fuerza de la se√±al
 char CMD_AT_CSCS[]="AT+CSCS?\r";            //status de la tarjeta SIM
 char CMD_AT_CREG[]="AT+CREG?\r";            //status del registro
-char CMD_AT_CSCA[]="AT+CSCA?\r";            //N˙mero del servicio
+char CMD_AT_CSCA[]="AT+CSCA?\r";            //N√∫mero del servicio
 char CMD_AT_CMGL[]="AT+CMGL=\"ALL\"\r";       //Lista todos los mensajes
 char CMD_AT_QINDCFG1[]= "AT+QIDNCFG=?\r";
 char CMD_AT_QINDCFG[]="AT+QINDCFG=\"smsincoming\",1\r";
-char CMD_AT_CMGR[]="AT+CMGR";               //Leer mensaje con index especÌfico
+char CMD_AT_CMGR[]="AT+CMGR";               //Leer mensaje con index espec√≠fico
 char CMD_AT_CMGD[]="AT+CMGD=1,4\r";           //Borrar mensajes,
 
 char inicioMSJ [] = "\"";
@@ -81,7 +81,7 @@ char coma[] = " , ";
 
 /*COMANDOS PARA GPS*/
 char CMD_AT_QGPS1[] = "AT+QGPS=1\r";
-char CMD_AT_QGPSLOC [] = "AT+QGPSLOC?\r"; //Solicitar ubicaciÛn
+char CMD_AT_QGPSLOC [] = "AT+QGPSLOC?\r"; //Solicitar ubicaci√≥n
 char CMD_AT_QGPSCFG0 [] = "AT+QGPSCFG=\"gnssconfig\"\r";
 char CMD_AT_QGPSEND [] = "AT+QGPSEND\r";
 
@@ -155,7 +155,7 @@ int main(void)
     recibirMensaje();
     act=0;
     firsTime=1;
-    latitud[0]='%';
+    auxLat[0]='%';
     printUART1("\r\n inicializando... \r\n");
     
     for(;EVER;)
@@ -225,7 +225,7 @@ void limpiezaCadGPS(){
     }
 }
 /****************************************************************************/
-/* DESCRIPCION:	ESTA RUTINA ENVÕA UN MENSAJE UTILIZANDO COMANDOS AT			*/
+/* DESCRIPCION:	ESTA RUTINA ENV√çA UN MENSAJE UTILIZANDO COMANDOS AT			*/
 /* PARAMETROS: NINGUNO                                                      */
 /* RETORNO: NINGUNO															*/
 /****************************************************************************/
@@ -233,7 +233,7 @@ void limpiezaCadGPS(){
 void enviarMensaje(){
     enviarComandoAT(CMD_AT_CMGF);
     /*Cadena con las coordenadas*/
-    /*ENVÕO A CONTACTO 1*/
+    /*ENV√çO A CONTACTO 1*/
     enviarComandoAT(CMD_AT_CMGS);
     enviarComandoAT(contacto1);
     enviarComandoAT(parteFinal);
@@ -244,7 +244,7 @@ void enviarMensaje(){
     enviarComandoAT(coma);
     enviarComandoAT(longitud);
     enviarComandoAT(parteFinMSJ);
-    /*ENVÕO A CONTACTO 2*/
+    /*ENV√çO A CONTACTO 2*/
     enviarComandoAT(CMD_AT_CMGS);
     enviarComandoAT(contacto2);
     enviarComandoAT(parteFinal);
@@ -255,7 +255,7 @@ void enviarMensaje(){
     enviarComandoAT(coma);
     enviarComandoAT(longitud);
     enviarComandoAT(parteFinMSJ);
-    /*ENVÕO A CONTACTO 3*/
+    /*ENV√çO A CONTACTO 3*/
     enviarComandoAT(CMD_AT_CMGS);
     enviarComandoAT(contacto3);
     enviarComandoAT(parteFinal);
@@ -269,24 +269,24 @@ void enviarMensaje(){
 }
 
 /****************************************************************************/
-/* DESCRIPCION:	ESTA RUTINA ENVÕA UN MENSAJE UTILIZANDO COMANDOS AT			*/
+/* DESCRIPCION:	ESTA RUTINA ENV√çA UN MENSAJE UTILIZANDO COMANDOS AT			*/
 /* PARAMETROS: NINGUNO                                                      */
 /* RETORNO: NINGUNO															*/
 /****************************************************************************/
 
 void enviarMensajeFinal(){
      /*Cadena final*/ 
-        //ENVÕO A CONTACTO 1
+        //ENV√çO A CONTACTO 1
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto1);
         enviarComandoAT(parteFinal);
         enviarComandoAT(CMD_MSJFIN);
-        //ENVÕO A CONTACTO 2
+        //ENV√çO A CONTACTO 2
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto2);
         enviarComandoAT(parteFinal);
         enviarComandoAT(CMD_MSJFIN);
-        //ENVÕO A CONTACTO 3
+        //ENV√çO A CONTACTO 3
         enviarComandoAT(CMD_AT_CMGS);
         enviarComandoAT(contacto3);
         enviarComandoAT(parteFinal);
@@ -295,7 +295,7 @@ void enviarMensajeFinal(){
 }
 
 /******************************************************************************/
-/* DESCRIPCION:	ESTA RUTINA RECIBE Y PROCESA LOS MENSAJES QUE RECIBE EL M”DULO*/
+/* DESCRIPCION:	ESTA RUTINA RECIBE Y PROCESA LOS MENSAJES QUE RECIBE EL M√ìDULO*/
 /* PARAMETROS: NINGUNO                                                        */
 /* RETORNO: NINGUNO                                                           */
 /******************************************************************************/
@@ -341,7 +341,7 @@ void obtenerGPS(){
 
 
 /******************************************************************************/
-/* DESCRIPCION:	ESTA RUTINA ENVÕA LOS COMANDOS AL M”DULO IoT                  */
+/* DESCRIPCION:	ESTA RUTINA ENV√çA LOS COMANDOS AL M√ìDULO IoT                  */
 /* PARAMETROS: NINGUNO                                                        */
 /* RETORNO: NINGUNO                                                           */
 /******************************************************************************/
@@ -537,12 +537,12 @@ void configurarInterrupciones()
     IFS1bits.U2RXIF=0;    //UART2 Receiver Interrupt Flag Status bit
     IEC1bits.U2RXIE=1;    //UART2 Receiver Interrupt Enable bit (Interrupt request enabled)
     
-    IFS0bits.INT0IF=0;      //BOT”N
-    IEC0bits.INT0IE=1;      //Habilitamos la interrupciÛn
+    IFS0bits.INT0IF=0;      //BOT√ìN
+    IEC0bits.INT0IE=1;      //Habilitamos la interrupci√≥n
     INTCON2bits.INT0EP=0;   //Habilitamos el flanco de subida
     
     IFS0bits.T1IF=0;      //TIMER 1
-    IEC0bits.T1IE=1;      //Habilitamos la interrupciÛn
+    IEC0bits.T1IE=1;      //Habilitamos la interrupci√≥n
 }
 
 /****************************************************************************/
@@ -595,8 +595,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
         bandFin=3;
     }
     if(act==1){
-        /*INICIO DEL AN¡LISIS DE LA CADENA DE MENSAJE*/
-        /*Analisis de la cadena para recepciÛn de n˙meros de contacto y del mensaje*/
+        /*INICIO DEL AN√ÅLISIS DE LA CADENA DE MENSAJE*/
+        /*Analisis de la cadena para recepci√≥n de n√∫meros de contacto y del mensaje*/
         
         if(resp == 60 ){ //'<'
             if(cont == 0){
@@ -648,8 +648,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
                 m++;
             }
         }
-        /*FIN DEL AN¡LISIS DE CADENA DE MENSAJE*/
-        /*INICIO DEL AN¡LISIS DE CADENA GPS*/
+        /*FIN DEL AN√ÅLISIS DE CADENA DE MENSAJE*/
+        /*INICIO DEL AN√ÅLISIS DE CADENA GPS*/
     }else if(act==2){
         if (resp == 44 && contComa == 0){ //','
             contComa=1;
@@ -666,7 +666,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
             cont_long++;
         }
     }
-    /*FIN DEL AN¡LISIS DE CADENA GPS*/
+    /*FIN DEL AN√ÅLISIS DE CADENA GPS*/
     LATBbits.LATB0 = 0;     //LED
     IFS1bits.U2RXIF = 0;
 }
