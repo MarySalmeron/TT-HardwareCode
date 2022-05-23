@@ -1,6 +1,6 @@
 /* 
  * File:   main.c
- * Author: María José
+ * Author: MarÃ­a JosÃ©
  *
  * Created on 19 de febrero de 2022, 07:43 PM
  */
@@ -50,25 +50,24 @@ void __attribute__((__interrupt__)) _U2RXInterrupt( void );
 
 char CMD_AT[] = "AT\r";
 char CMD_ATE0[] = "ATE1\r";
-char CMD_AT_CMGF[] = "AT+CMGF=1\r";                     //Poner en modo texto
-//char CMD_AT_CMGS[] = "AT+CMGS=\"5574871193\"\r";        
+char CMD_AT_CMGF[] = "AT+CMGF=1\r";                     //Poner en modo texto        
 char CMD_AT_CMGS[] = "AT+CMGS=\"";
 char CMD_MENSAJE[] = "Mensaje enviado desde IoT\x1A\r";
 
-/*Comandos AT para recepción de mensajes*/
+/*Comandos AT para recepciÃ³n de mensajes*/
 
 char CMD_AT_GMM[]="AT+GMM\r";               //Describe el modulo
 char CMD_AT_COPS[]="AT+COPS?\r";            //Checa el network 
 char CMD_AT_CFUN[]="AT+CFUN?\r";            //Checa la funcionalidad
 char CMD_AT_CFUN1[]="AT+CFUN=1\r";          //Activa el SMS y el CALL
-char CMD_AT_CSQ[]="AT+CSQ\r";               //checa la fuerza de la señal
+char CMD_AT_CSQ[]="AT+CSQ\r";               //checa la fuerza de la seÃ±al
 char CMD_AT_CSCS[]="AT+CSCS?\r";            //status de la tarjeta SIM
 char CMD_AT_CREG[]="AT+CREG?\r";            //status del registro
-char CMD_AT_CSCA[]="AT+CSCA?\r";            //Número del servicio
+char CMD_AT_CSCA[]="AT+CSCA?\r";            //NÃºmero del servicio
 char CMD_AT_CMGL[]="AT+CMGL=\"ALL\"\r";       //Lista todos los mensajes
 char CMD_AT_QINDCFG1[]= "AT+QIDNCFG=?\r";
 char CMD_AT_QINDCFG[]="AT+QINDCFG=\"smsincoming\",1\r";
-char CMD_AT_CMGR[]="AT+CMGR";               //Leer mensaje con index específico
+char CMD_AT_CMGR[]="AT+CMGR";               //Leer mensaje con index especÃ­fico
 char CMD_AT_CMGD[]="AT+CMGD=1,4\r";           //Borrar mensajes,
 
 char CMD_MSJFIN [] = "Me encuentro segura, en un momento me comunico contigo\x1A\r";
